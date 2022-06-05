@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Question {
+  """Question id"""
+  id: Int!
+  content: String!
+  answer: String
+  answerNumber: Float
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type FieldError {
+  field: String!
+  message: String!
+}
+
+type User {
+  """User id"""
+  id: Int!
+  email: String!
+  firstName: String!
+  lastName: String!
+  authToken: String
+}
+
+type UserResponse {
+  errors: [FieldError!]
+  user: User
+}
+
+type Query {
+  questions: [Question!]!
+  user(id: Float!): [UserResponse!]
+}
+
+type Mutation {
+  registerUser(registerUserInput: RegisterUserInput!): UserResponse!
+}
+
+input RegisterUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
