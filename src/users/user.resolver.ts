@@ -8,6 +8,7 @@ import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from '@prisma/client';
 import { RegisterUserInput } from './dto/register-user.input';
 import { AuthService } from 'src/auth/auth.service';
+import argon2 from 'argon2';
 
 @Resolver(() => UserResponse)
 export class UserResolver {
@@ -37,7 +38,12 @@ export class UserResolver {
       };
     }
 
-    let newUser = await this.userService.createUser(registerUserInput);
+    let hash = await argon2.hash(password);
+
+    let newUser = await this.userService.createUser({
+      ...registerUserInput,
+      password: hash,
+    });
     let token = await this.authService.login(newUser);
     const user = { ...newUser, authToken: token.access_token };
     return { user };
